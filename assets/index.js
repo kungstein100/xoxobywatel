@@ -116,8 +116,17 @@ function isEmpty(value) {
   return pattern.test(value);
 }
 
+/**
+ * GitHub Pages compatible navigation
+ */
 function forwardToId(params) {
-  location.href = "/id?" + params;
+  if (typeof window.ghPagesConfig !== 'undefined' && window.ghPagesConfig.getPagePath) {
+    const path = window.ghPagesConfig.getPagePath('id');
+    window.location.href = `${path}?${params}`;
+  } else {
+    // Fallback: use relative path
+    window.location.href = `id.html?${params}`;
+  }
 }
 
 var guide = document.querySelector(".guide_holder");

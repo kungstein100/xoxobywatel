@@ -1,0 +1,14 @@
+# GitHub Pages configuration
+markdown: kramdown
+theme: jekyll-theme-minimal
+
+# Exclude Jekyll from processing
+exclude:
+  - .git
+  - .gitignore
+  - node_modules
+  - assets/fobywatel_assets.zip
+
+# Allow anything through
+include:
+  - .nojekyll

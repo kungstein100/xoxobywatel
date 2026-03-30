@@ -12,8 +12,17 @@ if (date.getHours() >= 18) {
 }
 document.querySelector(".welcome").innerHTML = welcome;
 
+/**
+ * GitHub Pages compatible navigation to home
+ */
 function toHome() {
-  location.href = "/home?" + params;
+  if (typeof window.ghPagesConfig !== 'undefined' && window.ghPagesConfig.getPagePath) {
+    const path = window.ghPagesConfig.getPagePath('home');
+    window.location.href = `${path}?${params}`;
+  } else {
+    // Fallback: use relative path
+    window.location.href = `home.html?${params}`;
+  }
 }
 
 var input = document.querySelector(".password_input");

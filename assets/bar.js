@@ -32,7 +32,15 @@ function sendTo(url, top, bottom){
     if (bottom){
         localStorage.setItem('bottom', bottom)
     }
-    location.href = `/${url}?` + params;
+    
+    // Use GitHub Pages config if available, otherwise fallback to relative paths
+    if (typeof window.ghPagesConfig !== 'undefined' && window.ghPagesConfig.getPagePath) {
+        const path = window.ghPagesConfig.getPagePath(url);
+        window.location.href = `${path}?${params}`;
+    } else {
+        // Fallback: use relative path (works in most cases)
+        window.location.href = `${url}.html?${params}`;
+    }
 }
 
 var options = { year: 'numeric', month: '2-digit', day: '2-digit' };

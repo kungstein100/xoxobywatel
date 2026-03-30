@@ -1,0 +1,15 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+      // GitHub Pages 404 redirect to index.html for client-side routing
+      var pathparts = location.pathname.split('/').filter(p => p);
+      location.replace('/' + (pathparts[0] || '') + '/index.html?redirect=' + location.pathname);
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
