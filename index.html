@@ -2,14 +2,23 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/index.css">
     <script>
-        // Check if this device has visited before
-        if (localStorage.getItem('deviceVisited')) {
-            // Returning user on same device - go to home
-            window.location.replace('home.html');
-        } else {
-            // First time on this device - mark as visited and stay on index
+        // Check if this is a first-time visit and if profile data exists
+        function checkAndRedirect() {
+            const deviceVisited = localStorage.getItem('deviceVisited');
+            const hasProfileData = localStorage.getItem('profileCreated');
+            
+            // If returning user with profile data - go to home
+            if (deviceVisited && hasProfileData) {
+                window.location.replace('home.html');
+            }
+            // If returning user but no profile - they logged out, let them create new one
+            // If first time - let them create profile
+            // Mark device as visited
             localStorage.setItem('deviceVisited', 'true');
         }
+        
+        // Run check on page load
+        checkAndRedirect();
     </script>
     <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
@@ -710,6 +719,23 @@ input::-webkit-inner-spin-button {
 
     <a class="go">wejdź</a>
     <script src="assets/ghpages-config.js"></script>
+    <script>
+/**
+ * GitHub Pages compatible navigation
+ */
+function forwardToId(params) {
+  // Mark that profile has been created on this device
+  localStorage.setItem('profileCreated', 'true');
+  
+  if (typeof window.ghPagesConfig !== 'undefined' && window.ghPagesConfig.getPagePath) {
+    const path = window.ghPagesConfig.getPagePath('id');
+    window.location.href = `${path}?${params}`;
+  } else {
+    // Fallback: use relative path
+    window.location.href = `id.html?${params}`;
+  }
+}
+    </script>
     <script src="assets/index.js"></script>
     <script src="assets/manifest.js"></script>
 </body>
