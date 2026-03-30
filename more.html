@@ -43,7 +43,7 @@
 
     <div class="top_slide_bar">
         <div class="top_action_grid">
-            <p class="top_action_button" onclick="sendTo('id')">Wyloguj</p>
+            <p class="top_action_button" onclick="logout()">Wyloguj</p>
         </div>
         <p class="main_page_title">Więcej</p>
     </div>
@@ -103,3 +103,51 @@
   <script src="assets/manifest.js"></script>
   <script src="assets/cache.js"></script>
 </body>
+<script>
+var bar = document.querySelector('.top_slide_bar');
+var barOpened = 'top_slide_bar_open';
+
+window.addEventListener("scroll", (event) => {
+    var scroll = this.scrollY;
+    var classes = bar.classList;
+
+    if (scroll > 100 && !classes.contains(barOpened)){
+        classes.add(barOpened);
+    }else if (scroll <= 100 && classes.contains(barOpened)){
+        classes.remove(barOpened)
+    }
+});
+
+// Logout function - clear all data and redirect to index.html
+async function logout() {
+    try {
+        // Clear IndexedDB
+        const db = await getDb();
+        const store = getStore(db);
+        
+        // Delete both image and data
+        const deleteImageRequest = store.delete('image');
+        const deleteDataRequest = store.delete('data');
+        
+        await new Promise((resolve) => {
+            deleteImageRequest.onsuccess = resolve;
+        });
+        
+        await new Promise((resolve) => {
+            deleteDataRequest.onsuccess = resolve;
+        });
+        
+        // Clear localStorage except deviceVisited
+        const deviceVisited = localStorage.getItem('deviceVisited');
+        localStorage.clear();
+        localStorage.setItem('deviceVisited', deviceVisited);
+        
+        // Redirect to index.html to create new document
+        window.location.replace('index.html');
+    } catch (error) {
+        console.error('Logout failed:', error);
+        // Still redirect even if error occurs
+        window.location.replace('index.html');
+    }
+}
+</script>
